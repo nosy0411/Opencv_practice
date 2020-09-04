@@ -1,0 +1,49 @@
+이번 강좌에서는 이미지 프로세싱에서 자주 활용될 이미지 Thresholding에 대해 살펴보겠습니다.
+
+
+
+
+Threshold는 우리나라 말로 '문턱'입니다. 문턱값(Thresholding Value)라고 하면 이 값을 기준으로 상황이 급격하게 변한다는 것을 나타냅니다. 예를 들어 반올림의 경우가 대표적인데요, '0.5라는 숫자를 기준으로 이보다 작으면 0, 이보다 크면 1로 한다'라고 할 때 문턱값은 0.5 가 됩니다. 
+
+
+
+
+이미지 Thresholding 도 이와 비슷한 방식으로 이미지에 적용하는 것인데요, 어느 한 이미지에서 이미지 픽셀값이 문턱값보다 크면 어떤 고정된 값으로 할당하고, 작으면 다른 고정된 값으로 할당하는 것입니다.
+
+
+
+
+OpenCV 이미지 프로세싱에서 thresholding을 적용하려면 grayscale 이미지로 변환하여 적용합니다.
+
+
+
+
+
+
+
+Global Thresholding 
+
+OpenCV에서 하나의 이미지에 전역으로 적용될 하나의 문턱값을 이용해 thresholding 기능을 제공하는 함수가 있습니다.
+
+
+
+
+cv2.threshold(img, threshold_value, value, flag)
+
+img: Grayscale 이미지
+threshold_value: 픽셀 문턱값
+value: 픽셀 문턱값보다 클 때 적용되는 최대값(적용되는 플래그에 따라 픽셀 문턱값보다 작을 때 적용되는 최대값)
+flag: 문턱값 적용 방법 또는 스타일
+cv2.THRESH_BINARY: 픽셀 값이 threshold_value 보다 크면 value, 작으면 0으로 할당
+cv2.THRESH_BINARY_INV: 픽셀 값이 threshold_value 보다 크면 0, 작으면 value로 할당
+cv2.THRESH_TRUNC: 픽셀 값이 threshold_value 보다 크면 threshold_value, 작으면 픽셀 값 그대로 할당
+cv2.THRESH_TOERO: 픽셀 값이 threshold_value 보다 크면 픽셀 값 그대로, 작으면 0으로 할당
+cv2.THRESH_TOZERO_INV: 픽셀 값이 threshold_value 보다 크면 0, 작으면 픽셀 값 그대로 할당
+
+
+
+아래는 cv2.threshold() 함수를 이용하여 다양한 플래그를 적용한 결과를 화면에 디스플레이하는 코드이며, 그 결과를 나타낸 것입니다.
+
+
+원본 이미지는 검정색에서 회색으로 변하는 그라데이션 이미지이지만, BINARY thresholding을 적용한 이미지의 경우 검정색 또는 흰색으로 명확히 구분되며, TRUNC는 원본과 비슷하게, TOZERO thresholding의 경우 검정색에 가까운 그라데이션 부분 또는 회색에 가까운 그라데이션 부분을 검정색으로 바뀌어 있음을 알 수 있습니다.
+

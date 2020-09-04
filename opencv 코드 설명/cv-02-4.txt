@@ -1,0 +1,46 @@
+>>> img = cv2.imread(imgfile, cv2.IMREAD_GRAYSCALE)
+
+
+
+
+이미지를 흑백으로 읽도록 합니다. OpenCV는 BGR 모드로 컬러 이미지를 다루는데 반해 Matplotlib은 RGB 모드로 컬러 이미지를 다룹니다. 따라서 OpenCV로 읽어들인 컬러 이미지 객체를 Matplotlib에 그대로 사용하게 될 때 제대로 된 컬러 색상이 나오지 않습니다.
+
+이에 대한 자세한 해결책은 Matplotlib 매뉴얼을 참고하셔서 공부를 해야합니다만, 이 강좌를 위해서는 흑백 이미지로도 충분하므로 패스하셔도 됩니다.
+
+
+
+
+? 
+
+>>> plt.imshow(img, cmap='gray', interpolation='bicubic')
+
+
+
+
+Matplotlib의 imshow 함수를 이용해 화면에 이미지를 디스플레이 하는 방법을 정의합니다.
+
+
+
+
+
+
+
+>>> plt.xticks([]), plt.yticks([])
+
+
+
+
+Matplotlib은 기본적으로 이미지를 표시할 때 x축 y축으로 눈금 표시를 합니다. 위 코드는 눈금 표시 없이 이미지를 표시하라는 코드입니다.
+
+
+
+
+? 
+
+>>> plt.show()
+
+
+
+
+최종적으로 화면에 이미지를 표시합니다.
+

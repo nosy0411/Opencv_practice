@@ -1,0 +1,91 @@
+이미지 비트 연산
+
+이미지 간 비트 연산은 다른 비트 연산과 마찬가지로 AND, OR, NOT, XOR 연산이 있습니다. 이미지 비트 연산은 이미지에서 특정 영역을 추출하거나 직사각형 모양이 아닌 ROI를 정의하거나 할 때 매우 유용합니다.
+
+
+
+
+우리가 해볼 것은 앞에서 예쁜 수지 사진에 아래의 OpenCV 로고를 추가해 보는 겁니다.
+
+
+>>> def bitoperation(hpos, vpos):
+
+
+
+
+로고가 전투기 이미지 위에 놓일 위치를 인자로 받습니다. 즉 로고는 전투기 이미지의 (hpos, vpos)에 위치하게 될 것입니다.
+
+
+
+
+이 코드의 메인 함수에서 bitoperation(10, 10)을 호출하였으므로, hpos=10, vpos=10 이 되겠죠~ 따라서 OpenCV 로고는 원본 이미지의 (10, 10) 좌표에 위치하게 됩니다.
+
+
+
+
+
+
+
+>>> rows, cols, channels = img2.shape
+
+>>> roi = img1[vpos:rows+vpos, hpos:cols+hpos]
+
+
+
+
+OpenCV 로고 이미지 크기를 구하고, 전투기 이미지 위의 좌표 (10, 10)에서 (cols+10, rows+10)를 OpenCV 로고를 위한 영역으로 ROI를 잡습니다. 바로 빨간색 점선으로 표시된 곳입니다.
+
+>>> img2gray = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+
+>>> ret, mask = cv2.threshold(img2gray, 10, 255, cv2.THRESH_BINARY)
+
+>>> mask_inv = cv2.bitwise_not(mask) 
+
+
+
+
+먼저 로고 이미지를 흑백으로 변환하고, 이를 이용해 마스크를 만듭니다. 마스크, 말 그대로 가면입니다. 이미지의 특정 영역에 마스크를 씌운 후 연산을 하게 되면 특정한 효과를 낼 수가 있죠.
+
+
+>>> img1_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)  
+
+>>> img2_fg = cv2.bitwise_and(img2, img2, mask=mask)
+
+
+
+
+cv2.bitwise_and(src1, src2, mask) 는 mask의 값이 0이 아닌 부분만 src1과 src2를 AND 연산 합니다. mask의 값이 0인 부분은 mask로 그대로 씌워두는 것이죠. 
+
+
+
+
+cv2.bitwise_and() 함수의 인자로 사용되는 mask는 1채널 값이어야 하므로 대부분 흑백 이미지입니다. mask의 값이 0이 아닌 부분은 곧 흰색 부분을 말하므로 mask의 검정색 부분은 연산을 하지 않고 검정색 그대로 이미지에 놓여지게 됩니다.
+
+
+
+
+생성되는 마스크는 흑, 백으로 완전히 구분되게 한 마스크와 그 반대의 이미지를 생성합니다.
+
+cv2.threshold() 함수는 이미지 thresholding을 배울 때 자세하게 설명토록 하겠습니다.
+
+
+
+
+>>> dst = cv2.add(img1_bg, img2_fg)
+
+
+
+
+검정색 픽셀값은 0이므로 두 이미지를 더하게 되면 검정색은 없어지고 검정색 아닌 색이 표출되게 되죠~
+
+img1_bg에 img2_fg를 합치면 아래와 같은 이미지가 생성됩니다. 
+
+이제 이 이미지를 전투기 이미지의 ROI 영역에 덮어 쓰면 마무리 됩니다. 아래 코드가 이 역할을 하는 것이죠~
+
+
+
+
+>>> img1[vpos:rows+vpos, hpos:cols+hpos] =dst
+
+
+

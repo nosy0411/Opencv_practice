@@ -1,0 +1,4 @@
+
+여기서 공부하면서 따라해보기
+
+https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_tutorials.html
